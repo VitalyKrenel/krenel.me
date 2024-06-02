@@ -1,4 +1,6 @@
 version = "0.3.X"
+summaryLength = 25
+
 [page]
 [page.math]
 enable = true
