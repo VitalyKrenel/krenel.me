@@ -87,6 +87,8 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
       page_id: page.id,
       property_id: id,
     });
+    // console.log('each property: ', response);
+
     if (response.object === "property_item") {
       switch (response.type) {
         case "checkbox":
@@ -141,6 +143,7 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
       )) {
         switch (result.type) {
           case "people":
+            console.log('People:', result.people)
             frontMatter[property] = frontMatter[property] || [];
             if (isFullUser(result.people)) {
               const fm = frontMatter[property];
@@ -164,9 +167,19 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
 
   // set default author
   if (frontMatter.authors == null) {
-    const response = await notion.users.retrieve({
-      user_id: page.last_edited_by.id,
-    });
+    // NOTE: notion.users.retrieve for some reason cannot fetch integrations user
+    // Quick 15 min google didn't help. So instead of retrieve() I manually
+    // specified the 'authors' field in my database.
+    // Probably make sense to figure out why this one doesn't work,
+    // but I don't have time at the moment
+    let response;
+    try {
+      response = await notion.users.retrieve({
+        user_id: page.last_edited_by.id,
+      });
+    } catch (e) {
+      console.log('Caught error during notion.users.retrieve(), but ignored: ', e);
+    }
     if (response.name) {
       frontMatter.authors = [response.name];
     }
