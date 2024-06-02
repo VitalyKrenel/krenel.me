@@ -1,4 +1,4 @@
-baseURL = "https://vitalykrenel.github.io/krenel.me/"
+baseURL = "https://krenel.me/"
 languageCode = "ru-ru"
 title = "Krenel.me"
 theme = "DoIt"
