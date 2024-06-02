@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import {
   Client,
   isFullUser,
-  iteratePaginatedAPI,
+  iteratePaginatedAPI
 } from "@notionhq/client";
 import {
   PageObjectResponse,
@@ -172,7 +172,8 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
     // specified the 'authors' field in my database.
     // Probably make sense to figure out why this one doesn't work,
     // but I don't have time at the moment
-    let response;
+    let response: any;
+
     try {
       response = await notion.users.retrieve({
         user_id: page.last_edited_by.id,
